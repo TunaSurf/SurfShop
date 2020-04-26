@@ -11,6 +11,7 @@ import HomePage from "../Home";
 import AccountPage from "../Account";
 import AdminPage from "../Admin";
 import PostListing from "../PostListing";
+import ViewListings from "../ViewListings";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthentication } from "../Session";
@@ -29,6 +30,7 @@ function App() {
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route path={ROUTES.ADMIN} component={AdminPage} />
         <Route path={ROUTES.POST_LISTING} component={PostListing} />
+        <Route path={ROUTES.VIEW_LISTINGS} component={ViewListings} />
       </Layout>
     </Router>
   );

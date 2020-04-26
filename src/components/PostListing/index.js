@@ -84,7 +84,7 @@ function PostListingFormBase({ authUser, firebase, history }) {
           console.log("File available at", imageURL);
           firebase
             .post(postID)
-            .set({ ...listingInfo, image: imageURL })
+            .set({ ...listingInfo, image: imageURL, userID: authUser.uid })
             .then(function () {
               console.log("Document written with ID: ", postID);
               setListingInfo(INITIAL_STATE);

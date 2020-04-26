@@ -46,6 +46,9 @@ function NavigationAuth({ authUser }) {
           <Link to={ROUTES.POST_LISTING}>Post Listing</Link>
         </li>
         <li>
+          <Link to={ROUTES.VIEW_LISTINGS}>View Listings</Link>
+        </li>
+        <li>
           <SignOutButton />
         </li>
       </ul>
