@@ -11,13 +11,14 @@ const config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 export default class Firebase {
   constructor() {
     app.initializeApp(config);
 
+    this.app = app;
     this.auth = app.auth();
     this.db = app.firestore();
     this.storage = app.storage().ref();
@@ -58,7 +59,7 @@ export default class Firebase {
               email: authUser.email,
               emailVerified: authUser.emailVerified,
               providerData: authUser.providerData,
-              ...dbUser
+              ...dbUser,
             };
             next(authUser);
           });
@@ -76,9 +77,9 @@ export default class Firebase {
   users = () => this.db.collection("users");
 
   // *** Post API ***
-  post = (userID, postID) => this.db.doc(`users/${userID}/posts/${postID}`);
+  post = postID => this.db.doc(`posts/${postID}`);
 
-  posts = userID => this.db.collection(`users/${userID}/posts`);
+  posts = () => this.db.collection(`posts`);
 
   // ###########
   // Storage API

@@ -26,7 +26,7 @@ const INITIAL_STATE = {
   condition: "",
   price: "",
   description: "",
-  location: ""
+  location: "",
 };
 
 function PostListingFormBase({ authUser, firebase, history }) {
@@ -42,7 +42,7 @@ function PostListingFormBase({ authUser, firebase, history }) {
     condition,
     price,
     description,
-    location
+    location,
   } = listingInfo;
   const isInvalid = Object.values(listingInfo).includes("");
 
@@ -59,7 +59,7 @@ function PostListingFormBase({ authUser, firebase, history }) {
     // 3. Completion observer, called on successful completion
     uploadTask.on(
       "state_changed",
-      function(snapshot) {
+      function (snapshot) {
         // Observe state change events such as progress, pause, and resume
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         // var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -73,24 +73,35 @@ function PostListingFormBase({ authUser, firebase, history }) {
         //     break;
         // }
       },
-      function(err) {
+      function (err) {
         // Handle unsuccessful uploads
         console.error(err);
       },
-      function() {
+      function () {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-        uploadTask.snapshot.ref.getDownloadURL().then(function(imageURL) {
+        uploadTask.snapshot.ref.getDownloadURL().then(function (imageURL) {
           console.log("File available at", imageURL);
           firebase
-            .post(authUser.uid, postID)
+            .post(postID)
             .set({ ...listingInfo, image: imageURL })
-            .then(function(docRef) {
-              console.log("Document written with ID: ", docRef.id);
+            .then(function () {
+              console.log("Document written with ID: ", postID);
               setListingInfo(INITIAL_STATE);
-              history.push(ROUTES.HOME);
+              // Add an id reference to the new post to the user by updating the users post array
+              firebase
+                .user(authUser.uid)
+                .update({
+                  posts: firebase.app.firestore.FieldValue.arrayUnion(postID),
+                })
+                .then(function () {
+                  console.log(
+                    "User document succesfully updated with new post reference"
+                  );
+                  history.push(ROUTES.HOME);
+                });
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.error("Error adding document: ", error);
             });
         });
@@ -105,7 +116,7 @@ function PostListingFormBase({ authUser, firebase, history }) {
 
     setListingInfo(info => ({
       ...info,
-      [name]: value
+      [name]: value,
     }));
   }
 
@@ -170,9 +181,6 @@ function PostListingFormBase({ authUser, firebase, history }) {
   );
 }
 
-const PostListingForm = compose(
-  withRouter,
-  withFirebase
-)(PostListingFormBase);
+const PostListingForm = compose(withRouter, withFirebase)(PostListingFormBase);
 
 export default PostListing;
