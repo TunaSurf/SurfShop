@@ -7,3 +7,4 @@ export const ADMIN = "/admin";
 export const PASSWORD_FORGET = "/pw-forget";
 export const POST_LISTING = "/post-listing";
 export const VIEW_LISTINGS = "/listings";
+export const LISTING = "/listings/:listingID";

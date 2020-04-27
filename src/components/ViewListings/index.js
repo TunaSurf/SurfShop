@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import styled from "styled-components";
 
 import { withFirebase } from "../Firebase";
+import * as ROUTES from "../../constants/routes";
 
 function ViewListingsBase({ firebase }) {
   const [loading, setLoading] = useState(false);
@@ -40,13 +41,15 @@ function ListingsList({ listings }) {
     <StyledListing>
       <ul>
         {listings.map(listing => (
-          <li key={listing.uid}>
-            <span>{listing.brand}</span>
-            <span>{listing.model}</span>
-            <span>
-              <strong>User:</strong> {listing.userID}
-            </span>
-          </li>
+          <Link to={`${ROUTES.VIEW_LISTINGS}/${listing.uid}`}>
+            <li key={listing.uid}>
+              <span>{listing.brand}</span>
+              <span>{listing.model}</span>
+              <span>
+                <strong>User:</strong> {listing.userID}
+              </span>
+            </li>
+          </Link>
         ))}
       </ul>
     </StyledListing>

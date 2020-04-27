@@ -5,6 +5,7 @@ import cuid from "cuid";
 
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
+import { LISTING_ATTRIBUTES } from "../../constants/listing";
 import { AuthUserContext } from "../Session";
 import FileUpload from "../FileUpload";
 
@@ -19,18 +20,8 @@ function PostListing() {
   );
 }
 
-const INITIAL_STATE = {
-  brand: "",
-  model: "",
-  length: "",
-  condition: "",
-  price: "",
-  description: "",
-  location: "",
-};
-
 function PostListingFormBase({ authUser, firebase, history }) {
-  const [listingInfo, setListingInfo] = useState(INITIAL_STATE);
+  const [listingInfo, setListingInfo] = useState(LISTING_ATTRIBUTES);
   const [error, setError] = useState(null);
 
   const [selectedFile, setSelectedFile] = useState({ file: "", fileRef: "" });
@@ -87,7 +78,7 @@ function PostListingFormBase({ authUser, firebase, history }) {
             .set({ ...listingInfo, image: imageURL, userID: authUser.uid })
             .then(function () {
               console.log("Document written with ID: ", postID);
-              setListingInfo(INITIAL_STATE);
+              setListingInfo(LISTING_ATTRIBUTES);
               // Add an id reference to the new post to the user by updating the users post array
               firebase
                 .user(authUser.uid)
