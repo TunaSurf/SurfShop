@@ -35,7 +35,10 @@ function PostListingFormBase({ authUser, firebase, history }) {
     description,
     location,
   } = listingInfo;
-  const isInvalid = Object.values(listingInfo).includes("");
+  const isInvalid = Object.values({
+    ...listingInfo,
+    image: "string to pass validation",
+  }).includes("");
 
   function onSubmit(e) {
     console.log(selectedFile);
@@ -89,7 +92,7 @@ function PostListingFormBase({ authUser, firebase, history }) {
                   console.log(
                     "User document succesfully updated with new post reference"
                   );
-                  history.push(ROUTES.HOME);
+                  history.push(`${ROUTES.VIEW_LISTINGS}/${postID}`);
                 });
             })
             .catch(function (error) {

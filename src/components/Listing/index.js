@@ -44,11 +44,7 @@ function ListingDetails({ listing }) {
         <li>{listing.price}</li>
         <li>{listing.description}</li>
       </ul>
-      <img
-        src={listing.image}
-        alt="Meaningful description here"
-        style={{ width: "200px" }}
-      ></img>
+      <img src={listing.image} alt="" style={{ width: "200px" }}></img>
     </div>
   );
 }

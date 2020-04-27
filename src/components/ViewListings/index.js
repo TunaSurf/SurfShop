@@ -41,8 +41,8 @@ function ListingsList({ listings }) {
     <StyledListing>
       <ul>
         {listings.map(listing => (
-          <Link to={`${ROUTES.VIEW_LISTINGS}/${listing.uid}`}>
-            <li key={listing.uid}>
+          <Link to={`${ROUTES.VIEW_LISTINGS}/${listing.uid}`} key={listing.uid}>
+            <li>
               <span>{listing.brand}</span>
               <span>{listing.model}</span>
               <span>
