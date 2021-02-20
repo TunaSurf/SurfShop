@@ -1,17 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import "./index.css";
-import * as serviceWorker from "./serviceWorker";
-
-import App from "./components/App";
-import Firebase, { FirebaseContext } from "./components/Firebase";
+import {
+  AuthUserProvider,
+  FirebaseProvider,
+  ModalProvider,
+} from './shared/context';
+import App from './App';
 
 ReactDOM.render(
-  <FirebaseContext.Provider value={new Firebase()}>
-    <App />
-  </FirebaseContext.Provider>,
-  document.getElementById("root")
+  <React.StrictMode>
+    <FirebaseProvider>
+      <AuthUserProvider>
+        <ModalProvider>
+          <App />
+        </ModalProvider>
+      </AuthUserProvider>
+    </FirebaseProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
-
-serviceWorker.unregister();
