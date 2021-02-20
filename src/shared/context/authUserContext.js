@@ -24,7 +24,7 @@ export default function AuthUserProvider({ children }) {
 
         if (authUser) {
           // User is signed in.
-          const snapshot = await firebase.user(authUser.uid).get();
+          const snapshot = await firebase.dbUser(authUser.uid).get();
           const dbUser = snapshot.data();
 
           if (!dbUser.roles) {

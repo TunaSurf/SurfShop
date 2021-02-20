@@ -70,11 +70,11 @@ export default function SignUpForm() {
   return (
     <form onSubmit={onSubmit}>
       <input
-        name="username"
+        name="displayName"
         value={displayName}
         onChange={onChange}
         type="text"
-        placeholder="Full Name"
+        placeholder="Name"
       />
       <input
         name="email"

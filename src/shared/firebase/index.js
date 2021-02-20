@@ -37,24 +37,28 @@ export default class Firebase {
     // this.googleProvider.addScope('email');
   }
 
+  // ################
   // *** Auth API ***
+  // ################
   // Creates user, adds user to firebase's authenticated users, adds authenticated user to firestore's collection of users
   // Parameters: requires an email and password to authenticate, additional credentials will be added to the db
   createUserWithEmailAndPassword = async ({
     email,
     password,
-    ...restOfCredentials
+    displayName,
+    roles,
   }) => {
     // Authorize user
     const authUser = await this.auth.createUserWithEmailAndPassword(
       email,
       password
     );
-    // Now that user has been authorized, add to the users collection in the db as well
-    await this.user(authUser.user.uid).set(
+    // Add displayName to the user's profile
+    await authUser.user.updateProfile({ displayName });
+    // Now that user has been authorized, add a document to the users collection in the db as well
+    await this.dbUser(authUser.user.uid).set(
       {
-        email,
-        ...restOfCredentials,
+        roles,
       },
       {
         merge: true,
@@ -73,10 +77,8 @@ export default class Firebase {
   signInWithSocialProvider = async (provider) => {
     const socialAuthUser = await this.auth.signInWithPopup(provider);
     // Set user credentials in db
-    await this.user(socialAuthUser.user.uid).set(
+    await this.dbUser(socialAuthUser.user.uid).set(
       {
-        displayName: socialAuthUser.user.displayName,
-        email: socialAuthUser.user.email,
         roles: {},
       },
       { merge: true }
@@ -96,22 +98,22 @@ export default class Firebase {
 
   onAuthStateChanged = (observer) => this.auth.onAuthStateChanged(observer);
 
-  // ###########
-  // *** DB ***
-  // ###########
+  // #############
+  // *** DB API***
+  // #############
   // *** User API ***
-  user = (uid) => this.db.doc(`users/${uid}`);
+  dbUser = (uid) => this.db.doc(`users/${uid}`);
 
-  users = () => this.db.collection('users');
+  dbUsers = () => this.db.collection('users');
 
   // *** Post API ***
   post = (postID) => this.db.doc(`posts/${postID}`);
 
   posts = () => this.db.collection(`posts`);
 
-  // ###########
-  // Storage API
-  // ###########
+  // #################
+  // ***Storage API***
+  // #################
   upload = (file, location) =>
     this.storage.child(`posts/${location}`).put(file);
 }

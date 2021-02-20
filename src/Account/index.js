@@ -11,6 +11,7 @@ export default function Account() {
     <>
       <p>Account</p>
       <p>The account page is accessible by every signed in user.</p>
+      <p>User: {authUser.displayName}</p>
       <p>Email: {authUser.email}</p>
       {!authUser.emailVerified && <VerifyEmailLink />}
       <p>Change Password</p>
